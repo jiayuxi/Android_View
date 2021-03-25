@@ -15,13 +15,13 @@ import kotlin.math.min
 on 2021/3/16
 自定义圆
  */
-class CustomCircleView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
+class CircleView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
     // 初始化画笔
    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
    private var halfStrokeWidth  = 0f
 
-    // 初始化参数
-    init {
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
         paint.style = Paint.Style.STROKE
         paint.color = Color.BLUE
         paint.strokeWidth = 5f
@@ -30,9 +30,9 @@ class CustomCircleView(context: Context, attrs: AttributeSet? = null) : View(con
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        method_1(canvas)
+        canvas?.let {   canvasCircle(it) }
     }
-    private fun method_1(canvas: Canvas?) {
+    private fun canvasCircle(canvas: Canvas?) {
         // 计算x,y 起始坐标
         // x 的起点坐标 等于 paddingStart 间隔
         val startX = paddingStart.toFloat()

@@ -9,15 +9,14 @@ import com.jiayx.javabase.R
 
 /**
  *Created by yuxi_
-on 2021/3/24
+on 2021/3/25
  */
-class RectFragment : Fragment() {
+class CenterCircleFragment : Fragment() {
 
       override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-              return inflater.inflate(R.layout.rect_layout,container,false)
+              return inflater.inflate(R.layout.center_circle_layout,container,false)
           }
-
-     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-         super.onViewCreated(view, savedInstanceState)
-     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
 }

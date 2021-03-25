@@ -12,7 +12,7 @@ import kotlin.math.min
  *Created by yuxi_
 on 2021/3/22
  */
-class CustomRect(context: Context,attrs:AttributeSet?) : View(context,attrs) {
+class RectView(context: Context, attrs:AttributeSet?) : View(context,attrs) {
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var mStrokeWidth = 0f
     override fun onAttachedToWindow() {

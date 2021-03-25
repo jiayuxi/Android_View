@@ -18,13 +18,15 @@ on 2021/3/10
  自定义 view
  绘制网格 使用中心点
  */
-class CustomGridView(context : Context, attrs: AttributeSet? = null) : View(context,attrs) {
+class GridView(context : Context, attrs: AttributeSet? = null) : View(context,attrs) {
     //初始化画笔
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     // 列数
     private var column = 36
     private var halfWidth = 0f
-    init{
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
         // 设置绘画笔参数
         paint.color = Color.GRAY
         paint.strokeWidth = 1f
@@ -33,7 +35,6 @@ class CustomGridView(context : Context, attrs: AttributeSet? = null) : View(cont
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let { canvasGrid(it) }
-        //canvas?.let { drawCenterGrid(it) }
     }
     
     /**
@@ -41,8 +42,8 @@ class CustomGridView(context : Context, attrs: AttributeSet? = null) : View(cont
      */
     private fun  canvasGrid(canvas: Canvas?){
         //计算坐标参数
-        // x 的起点坐标 为 paddingStart 间隔
         try {
+            // x 的起点坐标 为 paddingStart 间隔
             val startX = paddingStart.toFloat()
             // x 的终点坐标为绘制区域width - paddingEnd间隔
             val endX = width.toFloat() - paddingEnd
