@@ -75,7 +75,7 @@ class GridView(context : Context, attrs: AttributeSet? = null) : View(context,at
             // 求取最大条数
             val maxLines = max(columnLines, rowLines)
             //
-            paint.color = Color.parseColor("#66ff0000")
+            paint.color = Color.parseColor("#6600ff00")
             for (i in 0..maxLines) {
                 val offset = relSpace * i
                 // 纵线

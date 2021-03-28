@@ -44,9 +44,9 @@ class LinearGradientView (context: Context, attrs: AttributeSet?) : View(context
         val maxX =  endX - strokeWidth
         val minY = startY + strokeWidth
         val maxY = endY - strokeWidth
-        paint.color = Color.BLUE
+        /*paint.color = Color.BLUE
         paint.style = Paint.Style.FILL_AND_STROKE
-        canvas?.drawRect(minX,minY,maxX,maxY,paint)
+        canvas?.drawRect(minX,minY,maxX,maxY,paint)*/
         // 计算画布中心点的坐标
         val canvasWidth1 = endX - startX
         val canvasHeight2 = endY - startY
@@ -55,15 +55,19 @@ class LinearGradientView (context: Context, attrs: AttributeSet?) : View(context
         val radius1 = min(canvasWidth1,canvasHeight2) / 2 - strokeWidth
         paint.color = Color.RED
         paint.style = Paint.Style.FILL
-        shader = LinearGradient(startX,startY,endX,endY,Color.YELLOW,Color.parseColor("#6600ff00"),Shader.TileMode.MIRROR)
+        val midpoint = (endY + startY) / 2
+        /*shader = LinearGradient(startX,midpoint,endX,midpoint,Color.parseColor("#E91E63"),
+                Color.parseColor("#2196F3"),Shader.TileMode.MIRROR)
         paint.shader = shader
-        canvas?.drawCircle(centerX,centerY,radius1,paint)
-        shader = LinearGradient(startX,startY,endX,endY,Color.MAGENTA,Color.GREEN,Shader.TileMode.CLAMP)
+        canvas?.drawCircle(centerX,centerY - 500,radius1,paint)*/
+        shader = LinearGradient(startX,midpoint,endX,midpoint,Color.parseColor("#E91E63"),
+                Color.parseColor("#2196F3"),Shader.TileMode.MIRROR)
         paint.shader = shader
-        canvas?.drawCircle(centerX,centerY,radius1-100,paint)
-        shader = LinearGradient(startX,startY,endX,endY,Color.WHITE,Color.parseColor("#00ff0000"),Shader.TileMode.REPEAT)
+        canvas?.drawCircle(centerX,midpoint,radius1,paint)
+       /* shader = LinearGradient(startX,midpoint,endX,midpoint,Color.parseColor("#E91E63"),
+                Color.parseColor("#2196F3"),Shader.TileMode.REPEAT)
         paint.shader = shader
-        canvas?.drawCircle(centerX,centerY,radius1-150,paint)
+        canvas?.drawCircle(centerX,centerY,radius1-150,paint)*/
 
     }
 }

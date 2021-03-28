@@ -1,6 +1,5 @@
 package com.jiayx.javabase
 
-import android.graphics.PointF
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -28,16 +27,20 @@ class MainActivity : AppCompatActivity() {
         val pointFragment = PointFragment()
         val centerCircleFragment = CenterCircleFragment()
         val linearGradientFragment = LinearGradientFragment()
+        val radialGradientFragment = RadialGradientFragment()
+        val sweepGradientFragment = SweepGradientFragment()
         list.add(circleFragment)
         list.add(gridFragment)
         list.add(rectFragment)
         list.add(pointFragment)
         list.add(centerCircleFragment)
         list.add(linearGradientFragment)
+        list.add(radialGradientFragment)
+        list.add(sweepGradientFragment)
         adapter = CollectionAdapter(this,list)
         viewPage2.adapter = adapter
 
-        val array = arrayOf("自定义圆","自定义网格","自定义矩形","自定义圆点","绘制圆心坐标圆","线性渐变")
+        val array = arrayOf("自定义圆","自定义网格","自定义矩形","自定义圆点","绘制圆心坐标圆","线性渐变","辐射渐变","扫描渐变")
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = array[position]
         }.attach()
