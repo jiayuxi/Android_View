@@ -12,35 +12,32 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     private lateinit var viewPage2 : ViewPager2
     private lateinit var adapter: CollectionAdapter
-    private lateinit var list : ArrayList<Fragment>
     private lateinit var tabLayout: TabLayout
+    private val fragments by lazy {
+       listOf(
+           AnimateFragment(),
+          CircleFragment(),
+          GridFragment(),
+          RectFragment(),
+          PointFragment(),
+          CenterCircleFragment(),
+          LinearGradientFragment(),
+          RadialGradientFragment(),
+          SweepGradientFragment(),
+          ClipRectFragment(),
+           AppEditTextFragment(),
 
+       )
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewPage2 = findViewById(R.id.viewPager)
         tabLayout = findViewById(R.id.tab_layout)
-        list = ArrayList<Fragment>()
-        val circleFragment = CircleFragment()
-        val gridFragment = GridFragment()
-        val rectFragment = RectFragment()
-        val pointFragment = PointFragment()
-        val centerCircleFragment = CenterCircleFragment()
-        val linearGradientFragment = LinearGradientFragment()
-        val radialGradientFragment = RadialGradientFragment()
-        val sweepGradientFragment = SweepGradientFragment()
-        list.add(circleFragment)
-        list.add(gridFragment)
-        list.add(rectFragment)
-        list.add(pointFragment)
-        list.add(centerCircleFragment)
-        list.add(linearGradientFragment)
-        list.add(radialGradientFragment)
-        list.add(sweepGradientFragment)
-        adapter = CollectionAdapter(this,list)
+        adapter = CollectionAdapter(this,fragments)
         viewPage2.adapter = adapter
-
-        val array = arrayOf("自定义圆","自定义网格","自定义矩形","自定义圆点","绘制圆心坐标圆","线性渐变","辐射渐变","扫描渐变")
+        val array = arrayOf("动画","自定义圆","自定义网格","自定义矩形","自定义圆点","绘制圆心坐标圆"
+            ,"线性渐变","辐射渐变","扫描渐变","裁切","AppEdit")
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = array[position]
         }.attach()

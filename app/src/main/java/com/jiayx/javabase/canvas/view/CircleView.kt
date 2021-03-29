@@ -2,10 +2,12 @@ package com.jiayx.javabase.canvas.view
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.RequiresApi
+import com.jiayx.javabase.R
 import kotlin.math.min
 
 /**
@@ -24,6 +26,7 @@ class CircleView(context: Context, attrs: AttributeSet? = null) : View(context, 
         paint.color = Color.BLUE
         paint.strokeWidth = 5f
         halfStrokeWidth = paint.strokeWidth / 2
+
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -58,5 +61,6 @@ class CircleView(context: Context, attrs: AttributeSet? = null) : View(context, 
         paint.shader = null
         paint.color = Color.WHITE
         canvas?.drawCircle(conterx, contery, 275f, paint)
+
     }
 }
