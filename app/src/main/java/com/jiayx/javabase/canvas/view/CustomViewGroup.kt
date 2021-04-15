@@ -47,8 +47,8 @@ class CustomViewGroup(context: Context, attrs: AttributeSet?) : ViewGroup(contex
                 for (i in 0 until childCount) {
                     var childAt: View? = getChildAt(i)
                     childAt?.let {
-                        var measuredWdith = i * OFFSET + it.measuredWidth
-                        width = width.coerceAtLeast(measuredWdith)
+                        var measuredWidth = i * OFFSET + it.measuredWidth
+                        width = width.coerceAtLeast(measuredWidth)
                     }
                 }
             }

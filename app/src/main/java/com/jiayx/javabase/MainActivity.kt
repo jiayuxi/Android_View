@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.*
 import com.jiayx.javabase.canvas.ui.fragment.*
+import com.jiayx.javabase.canvas.ui.fragment.util.FlowLayoutFragment
 import com.jiayx.javabase.canvas.view.CustomViewGroup
 import com.jiayx.javabase.canvas.viewpage.CollectionAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,7 +28,8 @@ class MainActivity : AppCompatActivity() {
           SweepGradientFragment(),
           ClipRectFragment(),
            AppEditTextFragment(),
-           CustomViewGroupFragment()
+           CustomViewGroupFragment(),
+           FlowLayoutFragment()
 
        )
     }
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         adapter = CollectionAdapter(this,fragments)
         viewPage2.adapter = adapter
         val array = arrayOf("动画","自定义圆","自定义网格","自定义矩形","自定义圆点","绘制圆心坐标圆"
-            ,"线性渐变","辐射渐变","扫描渐变","裁切","AppEdit","自定义V")
+            ,"线性渐变","辐射渐变","扫描渐变","裁切","AppEdit","自定义ViewGroup","FlowLayout")
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = array[position]
         }.attach()
