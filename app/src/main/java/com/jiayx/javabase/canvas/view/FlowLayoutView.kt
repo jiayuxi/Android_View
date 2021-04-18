@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.view.textclassifier.TextClassifierEvent
 
 /**
  *Created by yuxi_
@@ -68,6 +69,12 @@ class FlowLayoutView(context: Context, attrs: AttributeSet?) : ViewGroup(context
                 lineWidth += childWidth
                 //获取最大的行高
                 lineHeight = lineHeight.coerceAtLeast(childHeight)
+                if (i == childCount - 1) {
+                    flowHeight += lineHeight
+                    flowWidth = flowWidth.coerceAtLeast(lineWidth)
+                    heights.add(lineHeight)
+                    views.add(lineViews)
+                }
             }
         }
         //设置 flowLayout 最终的宽高
