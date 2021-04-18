@@ -67,8 +67,11 @@ class FlowLayoutView(context: Context, attrs: AttributeSet?) : ViewGroup(context
                 lineViews.add(childView)
                 //累加行的宽度
                 lineWidth += childWidth
-                //获取最大的行高
-                lineHeight = lineHeight.coerceAtLeast(childHeight)
+                // 判断子 view 的高度，如果是 MATCH_PARENT ,暂时不做处理
+                if(lp.height != LayoutParams.MATCH_PARENT){
+                    //获取最大的行高
+                    lineHeight = lineHeight.coerceAtLeast(childHeight)
+                }
                 if (i == childCount - 1) {
                     flowHeight += lineHeight
                     flowWidth = flowWidth.coerceAtLeast(lineWidth)
@@ -77,10 +80,43 @@ class FlowLayoutView(context: Context, attrs: AttributeSet?) : ViewGroup(context
                 }
             }
         }
+        recalculateChild(widthMeasureSpec, heightMeasureSpec)
         //设置 flowLayout 最终的宽高
         val widthMeasure = if (widthMode == MeasureSpec.EXACTLY) widthSize else flowWidth
         val heightMeasure = if (heightMode == MeasureSpec.EXACTLY) heightSize else flowHeight
         setMeasuredDimension(widthMeasure, heightMeasure)
+    }
+
+    /**
+     * 重新计算行高
+     */
+    private fun recalculateChild(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        //获取行数大小
+        var lineSize = views.size
+        for (i in 0 until lineSize) {
+            //获取行高
+            var lineHeight = heights[i]
+            // 获取每一行的view
+            var lineView = views[i]
+            //获取每一行 view 的个数
+            var size = lineView.size
+            // 循环遍历子 view 个数
+            for (i in 0 until size) {
+                //获取子 view
+                var childView = lineView[i]
+                childView.let {
+                    // 获layoutParams
+                    var layoutParams = it.layoutParams
+                    if (layoutParams.height == LayoutParams.MATCH_PARENT) {
+                        var childMeasureSpecWidth =
+                            getChildMeasureSpec(widthMeasureSpec, 0, layoutParams.width)
+                        var childMeasureSpecHeight =
+                            getChildMeasureSpec(heightMeasureSpec, 0, lineHeight)
+                        it.measure(childMeasureSpecWidth, childMeasureSpecHeight)
+                    }
+                }
+            }
+        }
     }
 
     //布局
