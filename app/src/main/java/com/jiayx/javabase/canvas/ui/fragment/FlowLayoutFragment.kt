@@ -1,4 +1,4 @@
-package com.jiayx.javabase.canvas.ui.fragment.util
+package com.jiayx.javabase.canvas.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

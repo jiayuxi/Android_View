@@ -1,24 +1,111 @@
 package com.jiayx.javabase.canvas.view
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
-import android.view.textclassifier.TextClassifierEvent
+import android.view.*
+import android.widget.EdgeEffect
+import android.widget.OverScroller
+import androidx.annotation.RequiresApi
+import com.jiayx.javabase.canvas.ui.fragment.util.ToolUtils
+
 
 /**
  *Created by yuxi_
 on 2021/4/15
 自定义 流式布局
  */
-class FlowLayoutView(context: Context, attrs: AttributeSet?) : ViewGroup(context, attrs) {
+class FlowLayoutView : ViewGroup {
+
     private var lineViews = ArrayList<View>()
 
-    //定义一个list 存放行数，一行一行的存储
+    // 定义一个list 存放行数，一行一行的存储
     private val views by lazy { ArrayList<List<View>>() }
 
     // 定义一个list 存放行高
     private val heights by lazy { ArrayList<Int>() }
+
+    // 定义一个变量，判断是否可以滑动
+    private var scrollable = false
+
+    // 定义一个变量，代表本身的测量高度
+    private var measureHeight = 0
+
+    // 定义一个变量，代表内容的高度
+    private var realHeight = 0
+
+    // 创建一个变量
+    private var mTouchSlop = 0
+
+    // 定义一个对象 OverScroller
+    private lateinit var overScroller: OverScroller
+
+    // 边缘最顶部
+    private lateinit var mEdgeEGlopTop: EdgeEffect
+
+    // 边缘最底部
+    private lateinit var mEdgeGlopBottom: EdgeEffect
+
+    // 速度追踪器
+    private lateinit var velocityTracker: VelocityTracker
+
+    // 滑动的最低速度
+    private var mMinimumVelocity = 0
+
+    // 滑动的最大速度
+    private var mMaximumVelocity = 0
+
+    // 变量滚动的距离
+    private var mOverScrollDistance = 0
+
+    // 变量抛动的距离
+    private var mOverFlingDistance = 0
+
+    // 定义变量 是否被拖动
+    private var mIsBeingDragged = false
+
+    //
+    private val INVALID_POINTER = -1
+
+    // 定义 指针ID
+    private var mActivePointerId = INVALID_POINTER
+
+    // 定义一个 移动最后的 y 坐标
+    private var mLastMotionY = 0
+
+    //
+    private val mScrollOffset = IntArray(2)
+
+    //
+    private val mScrollConsumed = IntArray(2)
+
+    //
+    private var mNestedYOffset = 0
+
+    constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
+        initFlowLayout()
+    }
+
+    private fun initFlowLayout() {
+        overScroller = OverScroller(context)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            focusable.also { true }
+        }
+        descendantFocusability = FOCUS_AFTER_DESCENDANTS
+        willNotDraw().also { false }
+        // 包含到用户界面中用于超时、大小和距离的标准常量的方法。
+        var viewConfiguration = ViewConfiguration.get(context)
+        //在我们认为用户正在滚动之前，触摸的像素距离可能会徘徊
+        mTouchSlop = viewConfiguration.scaledTouchSlop
+        //发起抛投的最小速度，以每秒像素为单位。
+        mMinimumVelocity = viewConfiguration.scaledMinimumFlingVelocity
+        //发起抛投的最大速度，以每秒像素衡量。
+        mMaximumVelocity = viewConfiguration.scaledMaximumFlingVelocity
+        //显示边缘效果时视图应该覆盖的最大距离
+        mOverScrollDistance = viewConfiguration.scaledOverscrollDistance
+        //当显示边缘效果时，视图应该超越的最大距离
+        mOverFlingDistance = viewConfiguration.scaledOverflingDistance
+    }
 
     //测量
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -49,6 +136,10 @@ class FlowLayoutView(context: Context, attrs: AttributeSet?) : ViewGroup(context
                 val lp = it.getLayoutParams()
                 //计算当前行的剩余宽度是否可以容纳下一个 view ，如果放不下，换行，保存当前的view，累加行高
                 if (lineWidth + childWidth > widthSize) {//换行
+                    // TODO 如果一行只有一个元素，给定限定值
+                    if (lineViews.size == 1 && lineViews[0].layoutParams.height == LayoutParams.MATCH_PARENT) {
+                        lineHeight = ToolUtils.dp2px(150)
+                    }
                     //保存当前的行
                     views.add(lineViews)
                     //创建新的一行的集合
@@ -68,7 +159,7 @@ class FlowLayoutView(context: Context, attrs: AttributeSet?) : ViewGroup(context
                 //累加行的宽度
                 lineWidth += childWidth
                 // 判断子 view 的高度，如果是 MATCH_PARENT ,暂时不做处理
-                if(lp.height != LayoutParams.MATCH_PARENT){
+                if (lp.height != LayoutParams.MATCH_PARENT) {
                     //获取最大的行高
                     lineHeight = lineHeight.coerceAtLeast(childHeight)
                 }
